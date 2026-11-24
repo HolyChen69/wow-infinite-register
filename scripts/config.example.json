@@ -1,0 +1,120 @@
+{
+  "_comment": "可移植示例配置。所有 click 坐标 / detect 检测框 / 进程路径都绑定本机显示器、分辨率、UI 缩放与安装目录；换机、换分辨率、客户端改版后必须先用 calibrate.py 重新采集，禁止直接照搬本文件坐标。",
+  "meta": {
+    "label": "示例：PVP / 女 / 兽人(部落) / 猎人",
+    "window_title": "魔兽世界",
+    "screen": [3840, 2160],
+    "calibrated": false,
+    "recovery_mode": "restart_client",
+    "client_proc": "Wow.exe",
+    "client_exe": "<在此填写本机 Wow.exe 绝对路径，例如 E:\\World of Warcraft\\_forever_\\Wow.exe>",
+    "bnet_proc": "Battle.net.exe",
+    "bnet_exe": "<在此填写本机 Battle.net.exe 绝对路径，例如 F:\\Battle.net\\Battle.net.exe>",
+    "bnet_enter": [2300, 1090],
+    "shutdown_on_success": true,
+    "shutdown_delay_sec": 60,
+    "notes": "bnet_enter 为战网主页蓝色『进入游戏』按钮中心，须在目标机截图定位；recovery_mode=restart_client 走 NGA 实测路径：ALT+F4 关游戏、战网保留、回战网点进入游戏重开。"
+  },
+  "names": {
+    "main": "<主角色名>",
+    "sub": "<副角色名>"
+  },
+  "ui": {
+    "reconnect": [1921, 1082],
+    "ruleset_confirm": [3598, 2085],
+    "list_confirm": [3367, 1957],
+    "custom_appearance": [3528, 2050],
+    "name_main": [1582, 75],
+    "name_sub": [2227, 75],
+    "finish": [3527, 2049],
+    "dialog_confirm": [1960, 1122],
+    "back_1": [313, 2050],
+    "back_3": [97, 2020]
+  },
+  "signals": {
+    "green_box": [2555, 80, 2625, 125],
+    "green_min": 15,
+    "dialog_box": [1780, 1100, 2140, 1150],
+    "dialog_red_min": 0.30,
+    "finish_box": [3318, 2008, 3736, 2090],
+    "finish_red_max": 0.20,
+    "login_red_min": 0.0,
+    "login_red_max": 0.65,
+    "roster_box": [3193, 1935, 3541, 1980],
+    "roster_red_min": 0.25
+  },
+  "ruleset": {
+    "value": "PVP",
+    "options": {
+      "PVP": {
+        "click": [1665, 1137],
+        "detect": { "kind": "gold", "box": [1448, 700, 1480, 1560], "min": 0.08 }
+      }
+    }
+  },
+  "gender": {
+    "value": "女",
+    "options": {
+      "男": {
+        "click": [1842, 85],
+        "detect": {
+          "kind": "gender",
+          "left_box": [1780, 20, 1910, 150],
+          "right_box": [1925, 20, 2065, 150],
+          "value": "male",
+          "min": 0.15,
+          "ratio": 2.0
+        }
+      },
+      "女": {
+        "click": [1995, 85],
+        "detect": {
+          "kind": "gender",
+          "left_box": [1780, 20, 1910, 150],
+          "right_box": [1925, 20, 2065, 150],
+          "value": "female",
+          "min": 0.10,
+          "ratio": 1.25
+        }
+      }
+    }
+  },
+  "race": {
+    "value": "兽人",
+    "options": {
+      "兽人": {
+        "click": [475, 290],
+        "detect": {
+          "kind": "halo",
+          "box": [395, 210, 560, 375],
+          "min_bright": 0.07,
+          "min_gold": 0.005
+        }
+      }
+    }
+  },
+  "class": {
+    "value": "猎人",
+    "options": {
+      "猎人": {
+        "click": [1365, 1975],
+        "detect": { "kind": "bright", "box": [1290, 1900, 1445, 2040], "min": 0.12 }
+      }
+    }
+  },
+  "timing": {
+    "reconnect_wait": 6.0,
+    "ruleset_wait": 6.0,
+    "roster_wait": 4.0,
+    "after_pick": 2.0,
+    "to_naming": 3.0,
+    "after_name": 1.5,
+    "name_timeout": 10.0,
+    "dialog_timeout": 12.0,
+    "after_dialog_confirm": 15.0,
+    "back_final_pause": 15.0,
+    "restart_close_wait": 8.0,
+    "restart_boot_wait": 25.0,
+    "unknown_backoff": 180.0
+  }
+}
