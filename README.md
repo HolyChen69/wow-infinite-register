@@ -15,19 +15,19 @@
 
 ## ⚠️ 注意事项 / Important Notes
 
-### 1. 坐标与路径须在本机重新校准 / Recalibrate coordinates and paths on your own machine
+### 1. 坐标与路径须在本机重新校准 / Recalibrate Coordinates and Paths on Your Own Machine
 
 **中文**：本仓库内所有界面坐标、检测采样框与程序路径，均来自某一台特定显示器、特定分辨率下的实测基线，仅用于说明字段结构与阈值量级。换到其他电脑、显示器或分辨率后，**必须**先运行 `calibrate.py` 重新采集，并对性别 / 种族 / 职业等关键项做“选中 / 未选中”双态复核；直接照搬数字可能导致误点或误判。
 
 **English**: All UI coordinates, detection sample boxes, and program paths in this repository are a measured baseline taken from one specific monitor at one specific resolution. They are provided only to illustrate the field structure and rough threshold ranges. On another PC, monitor, or resolution, you **must** re-collect them with `calibrate.py` and verify each key control (gender / race / class) in both selected and unselected states. Copying the numbers blindly may cause misclicks or false detections.
 
-### 2. 服务端限制不可绕过，风险自负 / Server-side limits cannot be bypassed; use at your own risk
+### 2. 服务端限制不可绕过，风险自负 / Server-Side Limits Cannot Be Bypassed; Use at Your Own Risk
 
 **中文**：“阵营人口不平衡”等拒绝由服务端按动态平衡策略下发，脚本只负责按节奏重试与大退重开，**不能绕过或突破服务端限制**；服务器持续锁定某阵营 / 种族时，重试不保证建号成功。此外，模拟键鼠的自动化可能违反对应游戏或平台的用户协议，可能触发限流、短期封禁乃至封号，一切后果与账号风险由使用者自行承担。
 
 **English**: Rejections such as “faction population imbalance” are enforced server-side by dynamic balance rules. The script only retries at a controlled pace and restarts the client; it **cannot bypass or override server-side restrictions**. If the server keeps locking a faction or race, repeated retries do not guarantee a character is created. Furthermore, keyboard/mouse automation may violate the terms of service of the relevant game or platform and may trigger throttling, temporary suspension, or account bans. All consequences and account risks are borne by the user.
 
-## 目录结构 / Directory layout
+## 目录结构 / Directory Layout
 
 ```
 wow-infinite-register/
@@ -59,7 +59,7 @@ wow-infinite-register/
 - The game and Battle.net are installed and can log in normally; keep display scaling / DPI unchanged between calibration and runtime.
 - The default game window title is 「魔兽世界」; if it differs, set `meta.window_title` in your runtime config.
 
-## 快速上手 / Quick start
+## 快速上手 / Quick Start
 
 **中文**
 
@@ -111,7 +111,7 @@ wow-infinite-register/
    python -u register.py --config config_run.json --mode infinite --tag inf
    ```
 
-## 恢复模式 / Recovery mode
+## 恢复模式 / Recovery Mode
 
 **中文**
 
@@ -137,9 +137,9 @@ wow-infinite-register/
 - This package **ships no ready-to-use coordinates**; the numbers in `config.example.json` / `presets` only illustrate field structure and rough thresholds and are tied to a specific monitor and resolution. Do not run them as-is.
 - Coordinates must be collected on the target machine with `calibrate.py` + `vision.py`, and double-checked in both selected and unselected states.
 - Server-side faction locks are official dynamic balance rules; the automation only waits for a slot at a controlled pace and **cannot bypass server-side restrictions**.
-- The throttled-popup screen has no dedicated model yet; it is currently covered by the unknown-screen `unknown_backoff` (default 180 s) fallback.
+- The throttled-popup screen has no dedicated model yet; it is currently covered by the unknown-screen `unknown_backoff` (default 180 seconds) fallback.
 
-## 命令行速查 / CLI reference
+## 命令行速查 / CLI Reference
 
 | 命令 / Command | 作用 / Description |
 | --- | --- |
