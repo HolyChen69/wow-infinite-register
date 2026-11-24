@@ -1,8 +1,17 @@
-# wow-infinite-register（通用可移植包）
+# wow-infinite-register
 
-在真实 Windows 桌面上自动创建《魔兽世界："无限"》角色，遇"阵营人口不平衡"等拒绝弹窗按节奏重试，直到建号成功。
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
+[![Python 3.8+](https://img.shields.io/badge/Python-3.8%2B-blue.svg)](https://www.python.org/)
+[![Platform: Windows](https://img.shields.io/badge/Platform-Windows-0078D6.svg)](#)
+[![Zero Dependencies](https://img.shields.io/badge/Dependencies-none-brightgreen.svg)](#)
 
-> 合规提示：自动化模拟键鼠可能违反游戏用户协议，存在限流/短期封禁风险。仅用于个人研究与本机辅助，风险自负；启动前须向用户明示并取得确认。
+> Auto-create World of Warcraft: Forever characters on the real Windows desktop, retrying on “faction population imbalance” rejections until a character is created.
+>
+> 在真实 Windows 桌面上自动创建《魔兽世界：“无限”》角色，遇“阵营人口不平衡”等拒绝弹窗按节奏重试，直到建号成功。
+
+> **Terms notice (EN):** Keyboard/mouse automation may violate the game’s or platform’s Terms of Service and may lead to throttling, temporary suspension, or account bans. Use it only for personal research and local assistance; you use it at your own risk. Obtain explicit user consent before starting.
+>
+> **合规提示（中文）：** 自动化模拟键鼠可能违反游戏用户协议，存在限流 / 短期封禁风险。仅用于个人研究与本机辅助，风险自负；启动前须向用户明示并取得确认。
 
 ## ⚠️ 注意事项 / Important Notes
 
@@ -18,42 +27,52 @@
 
 **English**: Rejections such as “faction population imbalance” are enforced server-side by dynamic balance rules. The script only retries at a controlled pace and restarts the client; it **cannot bypass or override server-side restrictions**. If the server keeps locking a faction or race, repeated retries do not guarantee a character is created. Furthermore, keyboard/mouse automation may violate the terms of service of the relevant game or platform and may trigger throttling, temporary suspension, or account bans. All consequences and account risks are borne by the user.
 
-## 目录结构
+## 目录结构 / Directory layout
 
 ```
 wow-infinite-register/
-├── SKILL.md                      # 技能规范、安全闸门、工作流、排障速查
-├── README.md                     # 本文件
+├── SKILL.md                      # 技能规范、安全闸门、工作流、排障速查 / Skill spec, safety gates, workflow, troubleshooting
+├── README.md                     # 本文件 / This file
 ├── references/
-│   └── calibration.md            # 校准指南 / detect 类型 / 阈值技巧
+│   └── calibration.md            # 校准指南 / detect 类型 / 阈值技巧 / Calibration guide, detect types, threshold tips
 └── scripts/
-    ├── register.py                # 主程序：validate / probe / trial / infinite
-    ├── desktop_ctl.py             # Win32 真实桌面控制（零第三方依赖）
-    ├── vision.py                   # 连通域图像识别（红/金/绿区域）
-    ├── calibrate.py              # 交互式采集 capture / 框选 boxes / 校验 probe
-    ├── config.example.json         # 可移植示例配置（坐标/路径为样例，须本机重采）
+    ├── register.py                # 主程序：validate / probe / trial / infinite / Main entry
+    ├── desktop_ctl.py             # Win32 真实桌面控制（零第三方依赖）/ Real desktop control, stdlib only
+    ├── vision.py                  # 连通域图像识别（红/金/绿区域）/ Connected-component detection
+    ├── calibrate.py               # 交互式采集 capture / 框选 boxes / 校验 probe / Interactive capture and verify
+    ├── config.example.json        # 可移植示例配置（坐标/路径为样例，须本机重采）/ Portable sample config
     └── presets/
-        └── pvp-male-skydancer-druid.json   # 字段结构样例（勿直接运行）
+        └── pvp-male-skydancer-druid.json   # 字段结构样例（勿直接运行）/ Field-structure sample, do not run directly
 ```
 
-## 运行前提
+## 运行前提 / Prerequisites
+
+**中文**
 
 - Windows，Python 3.8+，**无第三方依赖**（仅用标准库 + ctypes）。
-- 游戏与战网已安装并可正常登录；屏幕缩放/DPI 在采集与运行期间保持一致。
+- 游戏与战网已安装并可正常登录；屏幕缩放 / DPI 在采集与运行期间保持一致。
 - 游戏窗口标题默认取「魔兽世界」；若不同，改运行配置 `meta.window_title`。
 
-## 快速上手
+**English**
+
+- Windows, Python 3.8+, **no third-party dependencies** (standard library + ctypes only).
+- The game and Battle.net are installed and can log in normally; keep display scaling / DPI unchanged between calibration and runtime.
+- The default game window title is 「魔兽世界」; if it differs, set `meta.window_title` in your runtime config.
+
+## 快速上手 / Quick start
+
+**中文**
 
 1. **复制示例配置**：把 `scripts/config.example.json` 复制为 `scripts/config_run.json`。
 2. **填路径**：在 `config_run.json` 填好本机 `client_exe`（Wow.exe）、`bnet_exe`（Battle.net.exe）的绝对路径。
-3. **现场校准坐标**（换机/换分辨率必须重做）：
+3. **现场校准坐标**（换机 / 换分辨率必须重做）：
    ```bash
    cd scripts
    python calibrate.py capture --out config_run.json --ruleset PVP --race 兽人 --klass 猎人 --gender 女 --main 雨读秋荷 --sub 青兰
    python calibrate.py boxes   --config config_run.json
    python register.py --config config_run.json --mode probe
    ```
-   按提示点击/框选各界面元素；probe 中性别/种族/职业三项应在选中态全 True、非目标态 False。
+   按提示点击 / 框选各界面元素；probe 中性别 / 种族 / 职业三项应在选中态全 True、非目标态 False。
 4. **校验**：
    ```bash
    python register.py --config config_run.json --mode validate
@@ -67,25 +86,66 @@ wow-infinite-register/
    python -u register.py --config config_run.json --mode infinite --tag inf
    ```
 
-## 恢复模式（`meta.recovery_mode`）
+**English**
+
+1. **Copy the sample config**: duplicate `scripts/config.example.json` as `scripts/config_run.json`.
+2. **Fill in paths**: set the absolute paths to your local `client_exe` (Wow.exe) and `bnet_exe` (Battle.net.exe) in `config_run.json`.
+3. **Calibrate coordinates on site** (must be redone on another PC or resolution):
+   ```bash
+   cd scripts
+   python calibrate.py capture --out config_run.json --ruleset PVP --race 兽人 --klass 猎人 --gender 女 --main 雨读秋荷 --sub 青兰
+   python calibrate.py boxes   --config config_run.json
+   python register.py --config config_run.json --mode probe
+   ```
+   Click or frame each UI element as prompted; in `probe`, the gender / race / class checks should all read True when selected and False otherwise.
+4. **Validate**:
+   ```bash
+   python register.py --config config_run.json --mode validate
+   ```
+5. **Dry run for 3 rounds** (disclose to the user and obtain explicit consent first):
+   ```bash
+   python -u register.py --config config_run.json --mode trial --rounds 3 --tag trial
+   ```
+6. **Infinite mode** (only after dry-run signals are stable and you have confirmed a second time):
+   ```bash
+   python -u register.py --config config_run.json --mode infinite --tag inf
+   ```
+
+## 恢复模式 / Recovery mode
+
+**中文**
 
 - `restart_client`（推荐，社区实测）：弹窗确定后 ALT+F4 关游戏、战网保留，回战网点「进入游戏」（`meta.bnet_enter`）重开客户端。
 - `in_client`：客户端内按后退链退回登录页。
 
-## 重要说明
+**English**
+
+- `restart_client` (recommended, community-tested): after dismissing the popup, ALT+F4 closes the game while Battle.net stays open, then click “Enter Game” (`meta.bnet_enter`) back in Battle.net to relaunch the client.
+- `in_client`: walk back through the in-client navigation chain to the login page.
+
+## 重要说明 / Notes
+
+**中文**
 
 - 本包**不内置可用坐标**：`config.example.json` / `presets` 里的数字只是字段结构与阈值量级参考，绑定特定显示器与分辨率，不可直接照搬运行。
-- 坐标必须在目标机上用 `calibrate.py` + `vision.py` 现场采集，并做选中/未选双态复核。
+- 坐标必须在目标机上用 `calibrate.py` + `vision.py` 现场采集，并做选中 / 未选双态复核。
 - 服务端阵营锁是官方动态平衡，自动化只负责按节奏蹲名额，**不能绕过服务端限制**。
 - 限流（throttled）弹窗尚无专用建模，当前由未知屏 `unknown_backoff`（默认 180 秒）退避兜底。
 
-## 命令行速查
+**English**
 
-| 命令 | 作用 |
+- This package **ships no ready-to-use coordinates**; the numbers in `config.example.json` / `presets` only illustrate field structure and rough thresholds and are tied to a specific monitor and resolution. Do not run them as-is.
+- Coordinates must be collected on the target machine with `calibrate.py` + `vision.py`, and double-checked in both selected and unselected states.
+- Server-side faction locks are official dynamic balance rules; the automation only waits for a slot at a controlled pace and **cannot bypass server-side restrictions**.
+- The throttled-popup screen has no dedicated model yet; it is currently covered by the unknown-screen `unknown_backoff` (default 180 s) fallback.
+
+## 命令行速查 / CLI reference
+
+| 命令 / Command | 作用 / Description |
 | --- | --- |
-| `python register.py --config <cfg> --mode validate` | 校验配置合法，不碰桌面 |
-| `python register.py --config <cfg> --mode probe` | 打印各检测项 True/False 与数值 |
-| `python register.py --config <cfg> --mode trial --rounds 3` | 固定轮数试跑，存截图与 jsonl |
-| `python register.py --config <cfg> --mode infinite` | 无限重试，成功写 `loop_success.png` 后停止 |
-| `python desktop_ctl.py shot <png>` | 抓全屏截图 |
-| `python desktop_ctl.py info` | 屏幕尺寸 + 前台窗口 + 顶层窗口列表 |
+| `python register.py --config <cfg> --mode validate` | 校验配置合法，不碰桌面 / Validate config without touching the desktop |
+| `python register.py --config <cfg> --mode probe` | 打印各检测项 True/False 与数值 / Print True/False and raw values for each check |
+| `python register.py --config <cfg> --mode trial --rounds 3` | 固定轮数试跑，存截图与 jsonl / Fixed-round dry run; saves screenshots and jsonl |
+| `python register.py --config <cfg> --mode infinite` | 无限重试，成功写 `loop_success.png` 后停止 / Retry forever; stop after writing `loop_success.png` |
+| `python desktop_ctl.py shot <png>` | 抓全屏截图 / Capture a full-screen screenshot |
+| `python desktop_ctl.py info` | 屏幕尺寸 + 前台窗口 + 顶层窗口列表 / Screen size, foreground window, top-level window list |
